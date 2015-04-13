@@ -1,0 +1,8 @@
+{
+  "name": "teryunlee",
+  "dependencies": {
+    "express": "^4.12.3",
+    "mysql": "^2.6.1",
+    "sequelize": "^2.0.5"
+  }
+}

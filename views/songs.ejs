@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+    <body>
+    Go
+    <p><%= songs.length %> songs found</p>
+    <ul>
+        <% songs.forEach(function(song) { %>
+        <li><%= song.title %> (<%= song.playCount %>) </li>
+        <% }); %>
+    </ul>
+    </body>
+</html>
