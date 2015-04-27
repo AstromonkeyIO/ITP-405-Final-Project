@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> 
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>        
+        <script type="text/javascript" src="example.js"></script>        
+    </head>
+    <body style="text-align: center; margin:15%;">
+    <%= message %>
+        <div id="login-container" style="z-index: 1; position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;">
+        <form action="/globe" method="post">
+            <input type="hidden" name="formType" value="login">
+            <div class="form-group">       
+                <input id="usernameInput" type="text" name="username" placeholder="Username" style="width: 250px;">
+            </div>
+            <div class="form-group"> 
+                <input id="passwordInput" type="text" name="password" placeholder="Password" style="width: 250px;">            
+            </div>
+        <input type="submit" value="Login" class="btn btn-default">
+        </form>
+        <button onclick="showSignUpCell()" class="borderlessButton" style="margin:10px;">I'm New</button> 
+        </div>
+
+        <div id="sign-up-container" method="post" style="z-index: -1; position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; visibility:hidden">
+        <form id="signUpForm" action="/globe" method="post">
+            <input type="hidden" name="formType" value="signUp">
+            <div class="form-group">       
+                <input id="newUsernameInput" type="text" name="newUsername" placeholder="Username" style="width: 250px;">
+            </div>
+            <div class="form-group"> 
+                <input id="newPasswordInput" type="text" name="newPassword" placeholder="Password" style="width: 250px;">            
+            </div>
+            <div class="form-group"> 
+                <input id="newPasswordInputRepear" type="text" name="newPasswordRepeat" placeholder="Password" style="width: 250px;">            
+            </div>
+        <input type="submit" value="Sign Up!" class="btn btn-default">
+        </form>
+        <button onclick="showLoginCell()" class="borderlessButton" style="margin:10px;">Go to login?</button> 
+        </div>
+
+        <script language="javascript">
+        /*
+        $('form#signUpForm').submit(function(e){
+        e.preventDefault();
+        var $this = $(this); // `this` refers to the current form element
+        $.post(
+            $this.attr("action"), // Gets the URL to sent the post to
+            $this.serialize(), // Serializes form data in standard format
+            function(data) {  },
+            "json" // The format the response should be in
+        );
+        });  
+        */
+        
+
+
+        function showSignUpCell() {
+    
+            $('#login-container').css("visibility", "hidden");
+            $('#sign-up-container').css("visibility", "visible");
+            $('#sign-up-container').css("zIndex", 1);
+            $('#login-container').css("zIndex", -1); 
+    
+        }
+
+        function showLoginCell() {
+    
+            $('#login-container').css("visibility", "visible");
+            $('#sign-up-container').css("visibility", "hidden");
+            $('#sign-up-container').css("zIndex", -1);
+            $('#login-container').css("zIndex", 1); 
+
+    
+        }            
+        </script>
+    </body>
+</html>

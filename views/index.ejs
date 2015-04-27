@@ -1,30 +1,482 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <title>WebGL Globe</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000000 url(loading.gif) center center no-repeat;
+        //color: #ffffff;
+        font-family: sans-serif;
+        font-size: 13px;
+        line-height: 20px;
+        height: 100%;
+      }
+
+      #info {
+
+        font-size: 11px;
+        position: absolute;
+        bottom: 5px;
+        background-color: rgba(0,0,0,0.8);
+        border-radius: 3px;
+        right: 10px;
+        padding: 10px;
+
+      }
+
+      #currentInfo {
+        width: 270px;
+        position: absolute;
+        left: 20px;
+        top: 63px;
+        
+        //background-color: rgba(0,0,0,0.2);
+
+        border-top: 1px solid rgba(255,255,255,0.4);
+        padding: 10px;
+      }
+
+      a {
+        color: #aaa;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .bull {
+        padding: 0 5px;
+        color: #555;
+      }
+
+      #title {
+        position: absolute;
+        top: 20px;
+        width: 270px;
+        left: 20px;
+        background-color: rgba(0,0,0,0.2);
+        border-radius: 3px;
+        font: 20px Georgia;
+        padding: 10px;
+      }
+
+      .year {
+        font: 16px Georgia;
+        line-height: 26px;
+        height: 30px;
+        text-align: center;
+        float: left;
+        width: 90px;
+        color: rgba(255, 255, 255, 0.4);
+
+        cursor: pointer;
+        -webkit-transition: all 0.1s ease-out;
+      }
+
+      .year:hover, .year.active {
+        font-size: 23px;
+        color: #fff;
+      }
+
+      #ce span {
+        display: none;
+      }
+
+      #ce {
+        width: 107px;
+        height: 55px;
+        display: block;
+        position: absolute;
+        bottom: 15px;
+        left: 20px;
+        background: url(ce.png);
+      }
+    #report-list {
+        list-style-type: none;
+        //width: 400px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    #report-container {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 5px;
+        background: white;
+        width: 230px;
+        height: 130px;
+    }
+    #fade{
+        display: none;
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        z-index:1001;
+        -moz-opacity: 0.7;
+        opacity:.70;
+        filter: alpha(opacity=70);
+    }
+    #light{
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 40%;
+        width: 550px;
+        height: 350px;
+        margin-left: -150px;
+        margin-top: -130px; //100                 
+        padding: 15px;
+        border-radius: 5px;
+        background: white;
+        z-index:1002;
+        overflow:visible;
+    }
+    </style>
+  </head>
+  <body>
+<script type="text/javascript">
+    var viruses = <%- JSON.stringify(viruses) %>;
+    console.log(viruses);
+    var virus_array = [];
+
+    var virus_object = function(lat, mag, lng) {
+        this.lat = lat;
+        this.mag = mag;
+        this.lng = lng;
+    };
+    
+
+    for(i = 0; i < viruses.length; i++)
+    {
+        console.log(viruses[i].detail); 
+        virus_array.push(new virus_object(viruses[i].latitude, 10, viruses[i].longitude));
+        
+    }
+    
+    for(i = 0; i < virus_array.length; i++)
+    {
+        console.log(virus_array[i]);
+
+    }
+       
+    
+
+</script>    
+
+
+  <div id="container"></div>
+  <div id="info">
+    <strong><a href="http://www.chromeexperiments.com/globe">WebGL Globe</a></strong> <span class="bull">&bull;</span> Created by the Google Data Arts Team <span class="bull">&bull;</span> Data acquired from <a href="http://sedac.ciesin.columbia.edu/gpw/">SEDAC</a>
+  </div>
+        <div id="light" style="text-align: center">
+            <form id="addVirus" action="/Send" method="post" enctype="multipart/form-data">
+               <input id="userId" type="hidden" name="userId" value=<%= user.id %>></input>
+               <div style="margin:10px;">
+                <select name="diseaseTypeId">
+                 <option value="1">Measles</option>
+                 <option value="2">Malaria</option>
+                 <option value="3">Tuberculosis</option>
+                 <option value="4">Ebola</option>
+               </select>
+               </div>
+               <input id="latitude" type="hidden" name="latitude" value="50"></input>
+               <input id="longitude" type="hidden" name="longitude" value="50"></input>
+               <input id="location" type="hidden" name="location"></input>
+               <div style="margin:10px;">
+                <textarea rows="4" cols="50" name="detail">
+               </textarea>
+               </div>
+               <input type="submit" value="Add" class="btn btn-default">
+           </form>
+        </div>
+        <div id="fade" onClick="lightbox_close();"></div>
+ 
 <!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+    <div>
+    Welcome <%= user.username %>
+    </div>
 -->
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>DVD Search</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> 
-        <script type="text/javascript" src="example.js"></script>        
-    </head>
-    <body style="text-align: center; margin:15%;">
-        <form action="/dvds">
-            <div class="form-group">       
-                <input id="searchDVDInput" type="text" name="title" placeholder="Search DVD!" style="width: 300px;">
-            </div>
-            <div class="form-group"> 
-                <select name="award">
-                    <option value="Oscar">Oscar</option>
-                    <option value="Grammy">Grammy</option>
-                </select>
-            </div>
-        <input type="submit" value="Search" class="btn btn-default">
-        </form>
-    </body>
+<div id="locationMessage" style="position:absolute; left:50%; top:5%;">Locating...</div>  
+ 
+<!--
+<div id="title">
+Virus Prevention
+</div>
+-->
+<div id="currentInfo">
+    <div style="position:absolute; width:400px;">
+    <span id="ebola" class="year">Ebola</span>
+    <span id="measles" class="year">Measles</span>
+    <span id="malaria" class="year">Malaria</span>
+    </div>
+    <div style="position:absolute; width:400px; margin-top: 20px;">
+    <button onclick="postGig()">Report!</button>  
+    <ul id="report-list">
+        <% viruses.forEach(function(virus) { %>
+               <li id="report-container">
+                User: <%= virus.user.username %>
+                <br>
+                Virus Type: <%= virus.virus_type.virus_type %>
+                <br>
+                Detail: <%= virus.detail %>
+                <br>
+                Location: <%= virus.location %>
+                <br>
+                Date: <%= virus.date %>
+                </li> 
+            <% }); %>
+    </ul>
+    </div>
+ </div>
+
+
+  <a id="ce" href="http://www.chromeexperiments.com/globe">
+    <span>This is a Chrome Experiment</span>
+  </a>
+
+  <script type="text/javascript" src="/third-party/Detector.js"></script>
+  <script type="text/javascript" src="/third-party/three.min.js"></script>
+  <script type="text/javascript" src="/third-party/Tween.js"></script>
+  <script type="text/javascript" src="globe.js"></script>  
+  
+
+<script type="text/javascript">
+
+  function codeLatLng(lat, lng) {
+    var geocoder = new google.maps.Geocoder();
+    var latlng = new google.maps.LatLng(lat, lng);
+    geocoder.geocode({'latLng': latlng}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+      console.log(results)
+        if (results[1]) {
+         //formatted address
+         //alert(results[0].formatted_address)
+        //find country name
+             for (var i=0; i<results[0].address_components.length; i++) {
+            for (var b=0;b<results[0].address_components[i].types.length;b++) {
+
+            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+                if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
+                    //this is the object you are looking for
+                    city= results[0].address_components[i];
+                    break;
+                }
+            }
+        }
+            //city data
+            console.log(city);
+            console.log(results[0].formatted_address);
+            $('#location').val(results[0].formatted_address);
+            alert(results[0].formatted_address);
+        } else {
+          alert("No results found");
+        }
+      } else {
+        alert("Geocoder failed due to: " + status);
+      }
+    });
+  }
+</script>
+
+
+
+<script type="text/javascript">
+function postGig()
+{
+    
+    window.scrollTo(0,0);
+    document.getElementById('light').style.display='block';
+    document.getElementById('fade').style.display='block';     
+    
+}
+
+function lightbox_close()
+{
+
+    document.getElementById('light').style.display='none';
+    document.getElementById('fade').style.display='none';
+    
+}
+
+
+    var latitude;
+    var longitude;
+	// check whether browser supports geolocation api
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: true });
+	} else {
+		//$(".map").text("Your browser is out of fashion, there\'s no geolocation!");
+	}
+
+	function positionSuccess(position) {
+                //alert("position sucess!");
+                $('#locationMessage').html("coordinates found!");
+                
+		latitude = position.coords.latitude;
+		longitude = position.coords.longitude;
+		accuracy = position.coords.accuracy; 
+                console.log("lat" + $('#latitude').val());
+                console.log("long" + $('#longitude').val());
+                $('#latitude').val(latitude);
+                $('#longitude').val(longitude);
+                console.log("lat" + $('#latitude').val());
+                console.log("long" + $('#longitude').val());
+                
+                codeLatLng(latitude, longitude);
+
+         };
+
+	function positionError(error) {
+		var errors = {
+			1: "Authorization fails", // permission denied
+			2: "Can\'t detect your location", //position unavailable
+			3: "Connection timeout" // timeout
+		};
+		showError("Error:" + errors[error.code]);
+	}
+    $('form#addVirus').submit(function(e){
+        e.preventDefault();
+        var $this = $(this); // `this` refers to the current form element
+        $.post(
+            $this.attr("action"), // Gets the URL to sent the post to
+            $this.serialize(), // Serializes form data in standard format
+            function(data) {  },
+            "json" // The format the response should be in
+        );
+        lightbox_close();
+
+});
+
+
+
+
+    if(!Detector.webgl){
+      Detector.addGetWebGLMessage();
+    } else {
+
+      var years = ['1990','1995','2000'];
+      var container = document.getElementById('container');
+      //var globe = new DAT.Globe(container);
+      var globe = DAT.Globe(document.getElementById('container'), function(label) {
+      return new THREE.Color([
+      0xd9d9d9, 0xb6b4b5, 0x9966cc, 0x15adff, 0x3e66a3,
+      0x216288, 0xff7e7e, 0xff1f13, 0xc0120b, 0x5a1301, 0xffcc02,
+      0xedb113, 0x9fce66, 0x0c9a39,
+      0xfe9872, 0x7f3f98, 0xf26522, 0x2bb673, 0xd7df23,
+      0xe6b23a, 0x7ed3f7][label]);
+  });
+
+
+
+      console.log(globe);
+      var i, tweens = [];
+      
+      var settime = function(globe, t) {
+        return function() {
+          new TWEEN.Tween(globe).to({time: t/years.length},500).easing(TWEEN.Easing.Cubic.EaseOut).start();
+        /*  
+        var y = document.getElementById('year'+years[t]);
+          if (y.getAttribute('class') === 'year active') {
+            return;
+          }
+          var yy = document.getElementsByClassName('year');
+          for(i=0; i<yy.length; i++) {
+            yy[i].setAttribute('class','year');
+          }
+          y.setAttribute('class', 'year active');
+          */
+        };
+      };
+      
+
+     /*
+      for(var i = 0; i<years.length; i++) {
+        var y = document.getElementById('year'+years[i]);
+        y.addEventListener('mouseover', settime(globe,i), false);
+      }
+      */
+
+        var y = document.getElementById('ebola');
+        y.addEventListener('mouseover', settime(globe,0), false);
+        var x = document.getElementById('measles');
+        x.addEventListener('mouseover', settime(globe,1), false);
+        var z = document.getElementById('malaria');
+        z.addEventListener('mouseover', settime(globe,2), false);
+
+
+
+      
+      var xhr;
+      TWEEN.start();
+      
+      
+      xhr = new XMLHttpRequest();
+      xhr.open('GET', 'population909500.json', true);
+      //xhr.open('GET', 'virusData.json', true);
+      xhr.onreadystatechange = function(e) {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            var data = JSON.parse(xhr.responseText);
+            //console.log(data[0][0]);
+            console.log("parsed json" + data);
+            window.data = data;
+            /*
+            for (i=0;i<data.length;i++) {
+              globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
+            }
+            */
+            console.log("yooooo");
+            for (i=0;i<data.length;i++) {
+               
+                console.log(data[i][1]);
+                console.log(data[i][0]);
+            }            
+            /*
+            var temp = [];
+            for(i = 0; i < virus_array.length; i++)
+            {
+                temp.push(virus_array[i].lat, virus_array[i].mag, virus_array[i].long);
+            }
+            */
+            //temp = [6,159,0.001,30,99,0.002,45,-109,0.000,42,115,0.007,4,-54,0.000];
+            var data = [
+                [
+                'cold', [6,159,0.50,30,99,0.80,45,-109,0.001,42,115,0.007,4,-54,0.70,-16,-67,0.90,21,-103,0.50,-20,-64,0.004,-40,-69,0.001,32,64,0.001,28,67,0.007,8,22,0.000,-15,133,0.000,-16,20,0.000,55,42,0.006,32,-81,0.011]
+                ],                
+                [
+                'Malaria', [6,159,0.001,30,99,0.002,45,-109,0.001,42,115,0.007,4,-54,0.000,-16,-67,0.016,21,-103,0.006,-20,-64,0.004,-40,-69,0.001,32,64,0.001,28,67,0.007,8,22,0.000,-15,133,0.000,-16,20,0.000,55,42,0.006,32,-81,0.011,31,36,0.084,9,80,0.014,42,-91,0.007,19,54,0.001,21,111,0.174,-3,-51,0.001,33,119,0.158,65,21,0.002,46,49,0.012,43,77,0.042,45,130,0.018,4,119,0.007,22,59,0.003,9,-82,0.003,46,-60,0.002,-14,15,0.007,-15,-76,0.001,57,15,0.007,52,9,0.058,10,120,0.004,24,87,0.150,0,-51,0.006,-5,123,0.016,-24,-53,0.010,-28,-58,0.016,43,0,0.019,24,70,0.026,-9,33,0.014,20,73,0.041,13,104,0.040,43,41,0.011,23,78,0.105,20,-72,0.001,38,-4,0.006,0,-77,0.018,-9,-35,0.059,25,109,0.035,-13,34,0.015,61,18,0.001,58,40,0.002,34,50,0.028,49,88,0.000,48,-99,0.001,-42,176,0.002,20,86,0.167,-18,30,0.008,53,44,0.006,29,18,0.001,5,16,0.003,49,-74,0.000,48,131,0.006,14,121,0.243,63,19,0.001,40,54,0.001,36,57,0.005,16,52,0.000,50,128,0.010,39,30,0.024,54,12,0.007,16,-61,0.012,27,80,0.216,29,101,0.002,14,78,0.071,7,13,0.003,41,125,0.026,-17,23,0.002,54,27,0.010,30,29,0.001,41,142,0.003,12,124,0.027,41,43,0.014,18,98,0.004,36,117,0.200,17,33,0.003,32,109,0.049,-7,23,0.013,27,-101,0.005,45,-73,0.124,21,-83,0.000,55,-131,0.001,52,105,0.025,-40,-65,0.000,32,36,0.115,31,7,0.001,32,-109,0.001,31,120,0.201,9,124,0.042,46,-2,0.001,-2,-50,0.003,18,-13,0.001,42,28,0.015,4,99,0.009,19,-77,0.002,18,38,0.007,33,4,0.005,-5,-75,0.000,-14,51,0.001,-15,-48,0.002,57,-5,0.000,52,37,0.017,13,38,0.015,-10,-41,0.002,-11,36,0.007,-18,-71,0.003,-20,27,0.002,56,89,0.001,33,-94,0.007,44,15,0.001,43,-4,0.006,20,37,0.000,-4,27,0.008,47,8,0.077,44,-98,0.001,23,114,0.385,38,24,0.056,14,10,0.007,10,-3,0.010,47,89,0.002,-34,152,0.083,38,-121,0.067,14,25,0.002,29,5,0.001,-9,-78,0.018,20,98,0.020,-19,-39,0.003,53,0,0.047,-23,150,0.000,49,1,0.029,48,40,0.045,38,97,0.000,35,-99,0.001,16,1,0.004,53,-115,0.000,48,119,0.001,29,-85,0.000,63,39,0.001,40,26,0.002,16,40,0.002,11,120,0.002,-8,14,0.003,26,-98,0.020,-12,-47,0.001,-32,28,0.012,40,-87,0.006,36,-76,0.039,17,82,0.053,50,19,0.093,12,-70,0.001,27,108,0.077,7,49,0.003,41,105,0.000,3,46,0.006,-16,168,0.001,-21,56,0.005,51,83,0.002,50,-122,0.000,30,9,0.001,7,-62,0.001,41,-6,0.005,-17,-52,0.001,-38,-58,0.003,-6,13,0.017,45,6,0.047,60,59,0.000,41,-121,0.000,17,-3,0.000,-6,-64,0.000,-7,35,0.003,-26,-61,0.001,41,-104,0.003,51,30,0.005,32,-8,0.043,27,40,0.002,4,33,0.003,21,98,0.010,-1,122,0.002,32,-89,0.005,31,92,0.001,46,42,0.007,8,-83,0.003,22,36,0.000,19,30,0.001,-10,-64,0.003,-2,22,0.002,-5,40,0.036,69,20,0.001,37,35,0.023,-2,133,0.001,10,93,0.001,-10,36,0.009,-14,-41,0.005,-34,22,0.001,56,46,0.003,37,-108,0.001,52,49,0.003,13,10,0.019,46,91,0.001]
+                ],
+                [
+                'Ebola', [6,159,0.80,30,99,0.80,45,-109,0.90,42,115,0.80,4,-54,0.70,-16,-67,0.90,21,-103,0.90,-20,-64,0.90,-40,-69,0.70,32,64,0.80,28,67,0.50,8,22,0.80,-15,133,0.80,-16,20,0.80,55,42,0.70,32,-81,0.80]
+                ]
+            ];
+            for (i=0;i<data.length;i++) {
+              globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
+            }
+
+            globe.createPoints();
+            settime(globe,0)();
+            globe.animate();
+            document.body.style.backgroundImage = 'none'; // remove loading
+          }
+        }
+      };
+      xhr.send(null);
+    }
+
+  </script>
+
+  </body>
+
 </html>
-
-
