@@ -1,5 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+var flash = require('connect-flash');
+
+
 //var session = require('express-session');
 //var cookieParser = require('cookie-parser');
 //var flash = require('express-flash');
@@ -12,11 +18,24 @@ var User = require('./models/user');
 var Virus = require('./models/virus');
 var Virus_Type = require('./models/virus_type');
 
+var NodeCache = require( "node-cache" );
+var myCache = new NodeCache();
+
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+io.on('connection', function(result){
+    console.log("socket ");
+    console.log(result);
+
+});
+//server.listen(3000);
+
 var app = express();
-//var session = require('express-session');
-//app.use(session()); // session middleware
-//app.use(session);
-//app.use(require('flash')());
+app.use(cookieParser('secret'));
+app.use(session({cookie: { maxAge: 60000 }}));
+app.use(flash());
+
+
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
@@ -24,7 +43,9 @@ app.use(bodyParser.urlencoded({
     extended:true
 }));
 
-app.use(session()); // session middleware
+
+
+
 
 /*
 app.configure(function() {
@@ -34,6 +55,7 @@ app.configure(function() {
 //app.use(express.bodyParser({uploadDir:'./uploads'}));
 
 app.get('/', function(req, res) {
+    
     /*
     console.log("index rednered T");
     res.render('index', {
@@ -42,9 +64,25 @@ app.get('/', function(req, res) {
     //res.write("hello");
     //res.end();
     */
+   
+    var array = [56,56,56,56,56,78,78,89];
+    obj = {variable: array };
+    success = myCache.set( "myKey", obj, 100 ); 
+    console.log(success);
+    //alert(success);
+
+    value = myCache.get( "myKey" );
+    //alert(value);
+    console.log(value);
+    if ( value == undefined ){
+      //alert('undefined');
+      console.log('undefined');
+    }
+    
+    
     console.log("index rednered T");
     res.render('login', {
-       title: 'Home 1', message: ''  
+       title: 'Home 1', message: req.flash('info')  
     });
     
     
@@ -54,6 +92,9 @@ app.get('/', function(req, res) {
 app.post('/globe', function(req, res) {
     //console.log(req);
     console.log("yoo");
+     req.flash('info', 'hello!');
+     console.log(('info', 'hello!'));
+     
     if(req.body.formType == "login")
     {
  
@@ -88,10 +129,14 @@ app.post('/globe', function(req, res) {
         }
         else
         {
+
+            //res.send(JSON.stringify(req.flash('test')));
+            
+            res.redirect('/');
             res.render('login', {
                 message: 'Login Failed'
-            }); 
- 
+            });             
+
         }
      });
         
@@ -102,15 +147,22 @@ app.post('/globe', function(req, res) {
     //console.log(req.body.newUsername);
     if(!req.body.newUsername || !req.body.newPassword || !req.body.newPasswordRepeat)
     {
+        
         console.log("not filled out");
-
+        res.redirect('/');
+        res.render('login', {
+                message: 'Login Failed'
+        }); 
+        
     }
     else if(req.body.newPassword != req.body.newPasswordRepeat)
     {
         console.log("password not mathed");
+        res.redirect('/');
+        /*
         res.render('login', {
                             message: 'failed'  
-                    });
+                    });*/
     }
     else
     {
@@ -123,7 +175,8 @@ app.post('/globe', function(req, res) {
             }).then(function(existingUser) {
                 
                 if(existingUser)
-                {
+                {   
+                    
                     res.render('login', {
                             message: 'failed'  
                     });

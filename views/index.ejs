@@ -112,7 +112,7 @@
         border-radius: 5px;
         background: white;
         width: 230px;
-        height: 130px;
+        min-height: 130px;
     }
     #fade{
         display: none;
@@ -149,20 +149,41 @@
     var viruses = <%- JSON.stringify(viruses) %>;
     console.log(viruses);
     var virus_array = [];
-
-    var virus_object = function(lat, mag, lng) {
-        this.lat = lat;
-        this.mag = mag;
-        this.lng = lng;
-    };
-    
+    var measles_array = [];
+    var ebola_array = [];
+    var malaria_array = [];
 
     for(i = 0; i < viruses.length; i++)
     {
-        console.log(viruses[i].detail); 
-        virus_array.push(new virus_object(viruses[i].latitude, 10, viruses[i].longitude));
-        
+        console.log(viruses[i].virus_type.virus_type);
+        if(viruses[i].virus_type.virus_type == "Ebola")
+        {
+            ebola_array.push(Math.round(viruses[i].latitude));
+            ebola_array.push(Math.round(viruses[i].longitude));
+            ebola_array.push(0.5);
+            console.log("ebola array" + ebola_array);
+
+        }
+        else if(viruses[i].virus_type.virus_type == "Malaria")
+        {
+            malaria_array.push(Math.round(viruses[i].latitude));
+            malaria_array.push(Math.round(viruses[i].longitude));
+            malaria_array.push(0.5);
+            console.log("malaria array" + malaria_array);
+
+        }
+        else if(viruses[i].virus_type.virus_type == "Measles")
+        {
+            measles_array.push(Math.round(viruses[i].latitude));
+            measles_array.push(Math.round(viruses[i].longitude));
+            measles_array.push(0.5);
+            console.log("measles array" + measles_array);
+
+        }
     }
+
+    virus_array = [['Ebola', ebola_array], ['Malaria', malaria_array], ['Measles', measles_array]];
+    console.log('virus array' + virus_array);
     
     for(i = 0; i < virus_array.length; i++)
     {
@@ -181,6 +202,7 @@
   </div>
         <div id="light" style="text-align: center">
             <form id="addVirus" action="/Send" method="post" enctype="multipart/form-data">
+               <div style="margin: 20px;">
                <input id="userId" type="hidden" name="userId" value=<%= user.id %>></input>
                <div style="margin:10px;">
                 <select name="diseaseTypeId">
@@ -190,6 +212,7 @@
                  <option value="4">Ebola</option>
                </select>
                </div>
+               <input id="casualities" type="text" name="casualities"></input>
                <input id="latitude" type="hidden" name="latitude" value="50"></input>
                <input id="longitude" type="hidden" name="longitude" value="50"></input>
                <input id="location" type="hidden" name="location"></input>
@@ -198,7 +221,8 @@
                </textarea>
                </div>
                <input type="submit" value="Add" class="btn btn-default">
-           </form>
+            </div>
+            </form>
         </div>
         <div id="fade" onClick="lightbox_close();"></div>
  
@@ -441,19 +465,13 @@ function lightbox_close()
                
                 console.log(data[i][1]);
                 console.log(data[i][0]);
-            }            
-            /*
-            var temp = [];
-            for(i = 0; i < virus_array.length; i++)
-            {
-                temp.push(virus_array[i].lat, virus_array[i].mag, virus_array[i].long);
             }
-            */
+            
             //temp = [6,159,0.001,30,99,0.002,45,-109,0.000,42,115,0.007,4,-54,0.000];
             var data = [
                 [
                 'cold', [6,159,0.50,30,99,0.80,45,-109,0.001,42,115,0.007,4,-54,0.70,-16,-67,0.90,21,-103,0.50,-20,-64,0.004,-40,-69,0.001,32,64,0.001,28,67,0.007,8,22,0.000,-15,133,0.000,-16,20,0.000,55,42,0.006,32,-81,0.011]
-                ],                
+                ],
                 [
                 'Malaria', [6,159,0.001,30,99,0.002,45,-109,0.001,42,115,0.007,4,-54,0.000,-16,-67,0.016,21,-103,0.006,-20,-64,0.004,-40,-69,0.001,32,64,0.001,28,67,0.007,8,22,0.000,-15,133,0.000,-16,20,0.000,55,42,0.006,32,-81,0.011,31,36,0.084,9,80,0.014,42,-91,0.007,19,54,0.001,21,111,0.174,-3,-51,0.001,33,119,0.158,65,21,0.002,46,49,0.012,43,77,0.042,45,130,0.018,4,119,0.007,22,59,0.003,9,-82,0.003,46,-60,0.002,-14,15,0.007,-15,-76,0.001,57,15,0.007,52,9,0.058,10,120,0.004,24,87,0.150,0,-51,0.006,-5,123,0.016,-24,-53,0.010,-28,-58,0.016,43,0,0.019,24,70,0.026,-9,33,0.014,20,73,0.041,13,104,0.040,43,41,0.011,23,78,0.105,20,-72,0.001,38,-4,0.006,0,-77,0.018,-9,-35,0.059,25,109,0.035,-13,34,0.015,61,18,0.001,58,40,0.002,34,50,0.028,49,88,0.000,48,-99,0.001,-42,176,0.002,20,86,0.167,-18,30,0.008,53,44,0.006,29,18,0.001,5,16,0.003,49,-74,0.000,48,131,0.006,14,121,0.243,63,19,0.001,40,54,0.001,36,57,0.005,16,52,0.000,50,128,0.010,39,30,0.024,54,12,0.007,16,-61,0.012,27,80,0.216,29,101,0.002,14,78,0.071,7,13,0.003,41,125,0.026,-17,23,0.002,54,27,0.010,30,29,0.001,41,142,0.003,12,124,0.027,41,43,0.014,18,98,0.004,36,117,0.200,17,33,0.003,32,109,0.049,-7,23,0.013,27,-101,0.005,45,-73,0.124,21,-83,0.000,55,-131,0.001,52,105,0.025,-40,-65,0.000,32,36,0.115,31,7,0.001,32,-109,0.001,31,120,0.201,9,124,0.042,46,-2,0.001,-2,-50,0.003,18,-13,0.001,42,28,0.015,4,99,0.009,19,-77,0.002,18,38,0.007,33,4,0.005,-5,-75,0.000,-14,51,0.001,-15,-48,0.002,57,-5,0.000,52,37,0.017,13,38,0.015,-10,-41,0.002,-11,36,0.007,-18,-71,0.003,-20,27,0.002,56,89,0.001,33,-94,0.007,44,15,0.001,43,-4,0.006,20,37,0.000,-4,27,0.008,47,8,0.077,44,-98,0.001,23,114,0.385,38,24,0.056,14,10,0.007,10,-3,0.010,47,89,0.002,-34,152,0.083,38,-121,0.067,14,25,0.002,29,5,0.001,-9,-78,0.018,20,98,0.020,-19,-39,0.003,53,0,0.047,-23,150,0.000,49,1,0.029,48,40,0.045,38,97,0.000,35,-99,0.001,16,1,0.004,53,-115,0.000,48,119,0.001,29,-85,0.000,63,39,0.001,40,26,0.002,16,40,0.002,11,120,0.002,-8,14,0.003,26,-98,0.020,-12,-47,0.001,-32,28,0.012,40,-87,0.006,36,-76,0.039,17,82,0.053,50,19,0.093,12,-70,0.001,27,108,0.077,7,49,0.003,41,105,0.000,3,46,0.006,-16,168,0.001,-21,56,0.005,51,83,0.002,50,-122,0.000,30,9,0.001,7,-62,0.001,41,-6,0.005,-17,-52,0.001,-38,-58,0.003,-6,13,0.017,45,6,0.047,60,59,0.000,41,-121,0.000,17,-3,0.000,-6,-64,0.000,-7,35,0.003,-26,-61,0.001,41,-104,0.003,51,30,0.005,32,-8,0.043,27,40,0.002,4,33,0.003,21,98,0.010,-1,122,0.002,32,-89,0.005,31,92,0.001,46,42,0.007,8,-83,0.003,22,36,0.000,19,30,0.001,-10,-64,0.003,-2,22,0.002,-5,40,0.036,69,20,0.001,37,35,0.023,-2,133,0.001,10,93,0.001,-10,36,0.009,-14,-41,0.005,-34,22,0.001,56,46,0.003,37,-108,0.001,52,49,0.003,13,10,0.019,46,91,0.001]
                 ],
@@ -461,10 +479,12 @@ function lightbox_close()
                 'Ebola', [6,159,0.80,30,99,0.80,45,-109,0.90,42,115,0.80,4,-54,0.70,-16,-67,0.90,21,-103,0.90,-20,-64,0.90,-40,-69,0.70,32,64,0.80,28,67,0.50,8,22,0.80,-15,133,0.80,-16,20,0.80,55,42,0.70,32,-81,0.80]
                 ]
             ];
+
+            //data = virus_array;
             for (i=0;i<data.length;i++) {
               globe.addData(data[i][1], {format: 'magnitude', name: data[i][0], animated: true});
             }
-
+            
             globe.createPoints();
             settime(globe,0)();
             globe.animate();
