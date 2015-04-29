@@ -3,43 +3,197 @@
     <head>
         <meta charset="UTF-8">
         <title>Login</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>        
-        <script type="text/javascript" src="example.js"></script>        
+        <script type="text/javascript" src="example.js"></script>
+        <style type="text/css">
+        
+        input {
+
+            width: 250px;
+            height: 40px;
+            font-family: 'HelveticaNeue';
+            font-size: 20px;
+            color: #555860;   
+        }
+
+        #login-container {  
+  
+            background-color: whitesmoke;
+            width: 400px;
+            height: 300px; 
+            box-shadow: 10px 10px 5px #888888;
+            opacity: 0.9;
+            filter: alpha(opacity=60); /* For IE8 and earlier */
+            padding-top: 40px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 20px;
+            border-radius: 10px; 
+            z-index: -1; 
+            position: absolute; 
+            margin-left: auto; 
+            margin-right: auto; 
+            left: 0; 
+            right: 0; 
+
+        }
+
+        #login-button {
+
+            color: white;
+            font-family: "HelveticaNeue";
+            font-size: 18px;
+            background-color: #90EE90;
+            width: 250px;
+            height: 50px;
+            border-radius: 10px;
+            padding: 0;
+            border: none;
+            outline:0;    
+            //background: none;
+
+        }
+
+        #login-button:hover {
+
+            opacity: 1.0;
+            background-color: #007FFF;
+
+        }
+
+        #message-container {
+
+            //background-color: #FF5050;
+            width: 400px;
+            //height: 150px;
+            font-family: 'HelveticaNeue';
+            font-size: 20px;
+            color: #FF5050;
+            //border-radius: 10px;
+            z-index: 1; 
+            position: absolute; 
+            margin-left: auto; 
+            margin-right: auto; 
+            left: 0; 
+            right: 0;
+            top: 20%;
+
+        }
+
+
+        #sign-up-container {  
+  
+            background-color: whitesmoke;
+            width: 400px;
+            height: 350px; 
+            box-shadow: 10px 10px 5px #888888;
+            opacity: 0.9;
+            filter: alpha(opacity=60); /* For IE8 and earlier */
+            padding-top: 40px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 20px;
+            border-radius: 10px; 
+            z-index: -1; 
+            position: absolute; 
+            margin-left: auto; 
+            margin-right: auto; 
+            left: 0; 
+            right: 0; 
+            visibility:hidden;
+        }
+
+        #sign-up-button {
+
+            color: white;
+            font-family: "HelveticaNeue";
+            font-size: 18px;
+            background-color: #90EE90;
+            width: 250px;
+            height: 50px;
+            border-radius: 10px;
+            padding: 0;
+            border: none;
+            outline:0;    
+            //background: none;
+
+        }
+
+        #sign-up-button:hover {
+
+            opacity: 1.0;
+            background-color: #007FFF;
+
+        }
+
+        #selector-button {
+
+            color: steelblue;
+            font-family: "HelveticaNeue";
+            font-size: 18px;
+            //background-color: #90EE90;
+            background: none;
+            width: 250px;
+            height: 60px;
+            //border-radius: 10px;
+            padding: 10px;
+            border: none;
+            outline:0;    
+            //background: none;
+
+        }
+
+
+
+
+
+
+        </style>
     </head>
-    <body style="text-align: center; margin:15%;">
+
+
+    <body style="text-align: center; margin:15%;"> 
+    <script type="text/javascript">
+        var selector = <%- JSON.stringify(selector) %>;
+        console.log(selector);
+        if(selector[0])
+        {
+            document.getElementById("login-container").style.visibility = "hidden";
+            document.getElementById("sign-up-container").style.visibility = "visible";
+        }
+    </script>
         <% if (message) { %>
-          <p>Message: <%= message %> </p>
-        <% } %>
-        <div id="login-container" style="z-index: 1; position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0;">
-        <form action="/globe" method="post">
+        <p id="message-container"><%= message %></p>
+        <% } %> 
+        <div id="login-container">
+        <form id="login-form" action="/globe" method="post">
             <input type="hidden" name="formType" value="login">
             <div class="form-group">       
-                <input id="usernameInput" type="text" name="username" placeholder="Username" style="width: 250px;">
+                <input id="usernameInput" type="text" name="username"  autocomplete="off" placeholder="Username" style="width: 250px;" value=<% if (usernameLogin){%><%= usernameLogin %><%}%>>
             </div>
             <div class="form-group"> 
-                <input id="passwordInput" type="text" name="password" placeholder="Password" style="width: 250px;">            
+                <input id="passwordInput" type="password" name="password"  autocomplete="off" placeholder="Password" style="width: 250px;" value=<% if (passwordLogin){%><%= passwordLogin %><%}%>>            
             </div>
-        <input type="submit" value="Login" class="btn btn-default">
+        <input id="login-button" type="submit" value="Login" class="btn btn-default">
         </form>
-        <button onclick="showSignUpCell()" class="borderlessButton" style="margin:10px;">I'm New</button> 
+        <button id="selector-button" onclick="showSignUpCell()" class="borderlessButton" style="margin:10px;">I'm New</button> 
         </div>
-
-        <div id="sign-up-container" method="post" style="z-index: -1; position: absolute; margin-left: auto; margin-right: auto; left: 0; right: 0; visibility:hidden">
+        <div id="sign-up-container">
         <form id="signUpForm" action="/globe" method="post">
             <input type="hidden" name="formType" value="signUp">
             <div class="form-group">       
-                <input id="newUsernameInput" type="text" name="newUsername" placeholder="Username" style="width: 250px;">
+                <input id="newUsernameInput" type="text" name="newUsername"  autocomplete="off" placeholder="Username" style="width: 250px;" value=<% if (usernameSignup){%><%= usernameSignup %><%}%>>
             </div>
             <div class="form-group"> 
-                <input id="newPasswordInput" type="text" name="newPassword" placeholder="Password" style="width: 250px;">            
+                <input id="newPasswordInput" type="password" name="newPassword"  autocomplete="off" placeholder="Password" style="width: 250px;" value=<% if (passwordSignup){%><%= passwordSignup %><%}%>>            
             </div>
             <div class="form-group"> 
-                <input id="newPasswordInputRepear" type="text" name="newPasswordRepeat" placeholder="Password" style="width: 250px;">            
+                <input id="newPasswordInputRepear" type="password" name="newPasswordRepeat" placeholder="Repeat Password" style="width: 250px;" value=<% if (passwordSignupRepeat){%><%= passwordSignupRepeat %><%}%>>            
             </div>
-        <input type="submit" value="Sign Up!" class="btn btn-default">
+        <input id="sign-up-button" type="submit" value="Sign Up!" class="btn btn-default">
         </form>
-        <button onclick="showLoginCell()" class="borderlessButton" style="margin:10px;">Go to login?</button> 
+        <button id="selector-button" onclick="showLoginCell()" class="borderlessButton" style="margin:10px;">Go to login?</button> 
         </div>
 
         <script language="javascript">
