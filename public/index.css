@@ -1,0 +1,317 @@
+      html {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background: #000000 url(loading.gif) center center no-repeat;
+        //color: #ffffff;
+        font-family: sans-serif;
+        font-size: 13px;
+        line-height: 20px;
+        height: 100%;
+      }
+
+      #info {
+
+        font-size: 11px;
+        position: absolute;
+        bottom: 5px;
+        background-color: rgba(0,0,0,0.8);
+        border-radius: 3px;
+        right: 10px;
+        padding: 10px;
+
+      }
+
+      #currentInfo {
+        width: 270px;
+        position: absolute;
+        left: 20px;
+        top: 63px;
+        
+        //background-color: rgba(0,0,0,0.2);
+
+        border-top: 1px solid rgba(255,255,255,0.4);
+        padding: 10px;
+      }
+
+      a {
+        color: #aaa;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .bull {
+        padding: 0 5px;
+        color: #555;
+      }
+
+      #title {
+        position: absolute;
+        top: 20px;
+        width: 270px;
+        left: 20px;
+        background-color: rgba(0,0,0,0.2);
+        border-radius: 3px;
+        font: 20px Georgia;
+        padding: 10px;
+      }
+
+      .year {
+        font: 16px Georgia;
+        line-height: 26px;
+        height: 30px;
+        text-align: center;
+        float: left;
+        width: 90px;
+        color: rgba(255, 255, 255, 0.4);
+
+        cursor: pointer;
+        -webkit-transition: all 0.1s ease-out;
+      }
+
+      .year:hover, .year.active {
+        font-size: 23px;
+        color: #fff;
+      }
+
+      #ce span {
+        display: none;
+      }
+
+      #ce {
+        width: 107px;
+        height: 55px;
+        display: block;
+        position: absolute;
+        bottom: 15px;
+        left: 20px;
+        background: url(ce.png);
+      }
+    #report-list {
+        list-style-type: none;
+        width: 270px;
+        position: absolute;
+        //left: 0px;
+        top: 180px;
+        width: 270px;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    #report-container {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        //background: #DFE2DB;
+        background: whitesmoke;
+        width: 230px;
+        min-height: 130px;
+        font-size: 15px;
+        font-family: "HelveticaNeue";
+        color: #3B3738;
+
+    }
+    #fade{
+        display: none;
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        z-index:1001;
+        -moz-opacity: 0.7;
+        opacity:.70;
+        filter: alpha(opacity=70);
+    }
+    #light{
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 40%;
+        width: 550px;
+        height: 350px;
+        margin-left: -150px;
+        margin-top: -130px; //100                 
+        padding: 15px;
+        border-radius: 10px;
+        background: white;
+        z-index:1002;
+        overflow:visible;
+    }
+    #comment-popup-fade{
+        display: none;
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        z-index:1001;
+        -moz-opacity: 0.7;
+        opacity:.70;
+        filter: alpha(opacity=70);
+    }
+    #comment-popup-show{
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 40%;
+        width: 550px;
+        height: 350px;
+        margin-left: -150px;
+        margin-top: -130px; //100                 
+        padding: 15px;
+        border-radius: 10px;
+        background: white;
+        z-index:1002;
+        overflow:visible;
+    }
+    #comments-list {
+
+        list-style-type: none;
+        width: 530px;
+        margin-top: 10px;
+        //padding: 15px;
+        //background: #DFE2DB; 
+        height: 250px;
+        //max-height: 150px;
+        overflow-y: auto;
+ 
+    }
+    #comment-container {
+        
+        padding: 10px;        
+        font-size: 20px;
+        font-family: "HelveticaNeue";
+        color: #3B3738;         
+
+    }
+    #report-button {
+
+        color: white;
+        font-family: "HelveticaNeue";
+        font-size: 18px;
+        background-color: #007FFF;
+        margin-top: 25px;
+        margin-bottom: 10px;
+        width: 250px;
+        height: 50px;
+        border-radius: 10px;
+        padding: 0;
+        border: none;
+        outline:0;
+
+    }
+    #report-button:hover {
+
+        opacity: 0.7;
+
+    }
+    #report-button-popup {
+
+        color: white;
+        font-family: "HelveticaNeue";
+        font-size: 18px;
+        background-color: #EE3B3B;
+        margin-top: 25px;
+        margin-bottom: 10px;
+        width: 250px;
+        height: 50px;
+        border-radius: 10px;
+        padding: 0;
+        border: none;
+        outline:0;
+
+    }
+    #report-button-popup:hover {
+
+        opacity: 0.7;
+
+    }
+    #send-comment-button {
+        float:left;
+        color: white;
+        font-family: "HelveticaNeue";
+        font-size: 18px;
+        background-color: #007FFF;
+        width: 100px;
+        height: 50px;
+        border-radius: 10px;
+        padding: 0;
+        border: none;
+        outline:0;
+        margin: 10px;
+    }
+    #send-comment-button:hover {
+
+        opacity: 0.7;
+
+    }
+    #report-box {
+        font-family: "HelveticaNeue";
+        font-size: 22px; 
+        width: 400px;
+    }
+    #comment-box {
+        font-family: "HelveticaNeue";
+        font-size: 22px; 
+        height: 50px;
+        width: 400px;
+        float: left;
+        margin: 10px;
+    }
+    #popup-comment {
+        color: white;
+        font-family: "HelveticaNeue";
+        font-size: 15px;
+        background-color: #007FFF;
+        width: 190px;
+        height: 40px;
+        border-radius: 10px;
+        padding: 0;
+        border: none;
+        outline:0;
+        margin: 5px;
+    }
+    .label-main {
+
+        color:steelblue;
+        margin-top:2px;
+        margin-bottom:2px;
+
+    }
+    #addVirus {
+        
+        padding: 20px;
+        text-align:center;
+
+    }
+    #disease-type-selector {
+        
+        width: 250px;
+        height: 150px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+
+    }
+    #admin-access {
+        width: 270px;
+        position: absolute;
+        left: 20px;
+        top: 40px;
+        padding: 0;
+        border: none;
+        outline:0;
+        color: white;
+        font-family: "HelveticaNeue";
+        font-size: 18px;
+        background-color: #007FFF;
+    }
+    admin-access:hover {
+        opacity: 0.7;
+    }
+

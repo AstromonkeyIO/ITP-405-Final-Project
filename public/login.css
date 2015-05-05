@@ -1,0 +1,140 @@
+        
+        input {
+
+            width: 250px;
+            height: 40px;
+            font-family: 'HelveticaNeue';
+            font-size: 20px;
+            color: #555860;
+   
+        }
+
+        #login-container {  
+  
+            background-color: whitesmoke;
+            width: 400px;
+            height: 300px; 
+            box-shadow: 10px 10px 5px #888888;
+            opacity: 0.9;
+            filter: alpha(opacity=60); /* For IE8 and earlier */
+            padding-top: 40px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 20px;
+            border-radius: 10px; 
+            z-index: -1; 
+            position: absolute; 
+            margin-left: auto; 
+            margin-right: auto; 
+            left: 0; 
+            right: 0; 
+
+        }
+
+        #login-button {
+
+            color: white;
+            font-family: "HelveticaNeue";
+            font-size: 18px;
+            //background-color: #90EE90;
+            //background-color: #80D0F0;
+            background-color: #90EE90;
+            width: 250px;
+            height: 50px;
+            border-radius: 10px;
+            padding: 0;
+            border: none;
+            outline:0;    
+
+
+        }
+
+        #login-button:hover {
+
+            opacity: 0.7;
+            background-color: #007FFF;
+
+        }
+
+        #message-container {
+
+            //background-color: #FF5050;
+            width: 400px;
+            //height: 150px;
+            font-family: 'HelveticaNeue';
+            font-size: 20px;
+            color: #FF5050;
+            //border-radius: 10px;
+            z-index: 1; 
+            position: absolute; 
+            margin-left: auto; 
+            margin-right: auto; 
+            left: 0; 
+            right: 0;
+            top: 20%;
+
+        }
+
+
+        #sign-up-container {  
+  
+            background-color: whitesmoke;
+            width: 400px;
+            height: 350px; 
+            box-shadow: 10px 10px 5px #888888;
+            opacity: 0.9;
+            filter: alpha(opacity=60); /* For IE8 and earlier */
+            padding-top: 40px;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 20px;
+            border-radius: 10px; 
+            z-index: -1; 
+            position: absolute; 
+            margin-left: auto; 
+            margin-right: auto; 
+            left: 0; 
+            right: 0; 
+            visibility:hidden;
+        }
+
+        #sign-up-button {
+
+            color: white;
+            font-family: "HelveticaNeue";
+            font-size: 18px;
+            background-color: #90EE90;
+            width: 250px;
+            height: 50px;
+            border-radius: 10px;
+            padding: 0;
+            border: none;
+            outline:0;    
+            //background: none;
+
+        }
+
+        #sign-up-button:hover {
+
+            opacity: 0.7;
+            background-color: #007FFF;
+
+        }
+
+        #selector-button {
+
+            color: steelblue;
+            font-family: "HelveticaNeue";
+            font-size: 18px;
+            //background-color: #90EE90;
+            background: none;
+            width: 250px;
+            height: 60px;
+            //border-radius: 10px;
+            padding: 10px;
+            border: none;
+            outline:0;    
+            //background: none;
+
+        }
+

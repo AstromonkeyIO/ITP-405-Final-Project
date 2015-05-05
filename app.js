@@ -13,7 +13,7 @@ var DVD = require('./models/DVD');
 var User = require('./models/user');
 var Virus = require('./models/virus');
 var Virus_Type = require('./models/virus_type');
-
+var Comment = require('./models/comment');
 var NodeCache = require( "node-cache" );
 var myCache = new NodeCache();
 
@@ -55,6 +55,8 @@ app.get('/', function(req, res) {
     });    
 });
 
+
+
 app.get('/globe', function(req, res) {
    
     cachedViruses = myCache.get( "viruses" );
@@ -77,7 +79,8 @@ app.get('/globe', function(req, res) {
   
 });
 
-app.get('/globe/api', function(req, res) {
+
+app.get('/globe/api.json', function(req, res) {
     
     User.hasMany(Virus, {foreignKey: 'user_id'});
     Virus.belongsTo(User, {foreignKey: 'user_id'});
@@ -145,12 +148,8 @@ app.get('/globe/api', function(req, res) {
         res.json(virus_array);
  
 });
+});  
     
-    
-    
-    
-});
-
 app.post('/globe', function(req, res) {
 
     if(req.body.formType == "login")
@@ -294,17 +293,100 @@ app.post('/globe', function(req, res) {
     
 });
 
+app.get('/globe/api/get_comments', function(req, res) {
+   
+
+        console.log(req);
+        User.hasMany(Comment, {foreignKey: 'id_user'});
+        Comment.belongsTo(User, {foreignKey: 'id_user'});
+        //Virus.hasMany(Virus_type, {foreignKey: 'virus_type_id'});
+        //Virus.belongsTo(Virus_Type, {foreignKey: 'virus_type_id'});
+        //Virus.hasMany(Comment, {foreignKey: 'virus_id'});
+        //Comment.belongsTo(Virus, {foreignKey: 'virus_id'});
+        virus_id = req.query.virus_id;
+        Comment.findAll({ 
+        where: {
+          virus_id: virus_id
+        },include: [{model: User, required: true}],
+        }).then(function(comments) {
+            res.json(comments);
+        });
+});
+
+app.get('/globe/api/send_comment', function(req, res) {
+   
+    var newComment = Comment.build();
+    newComment.comment = req.query.comment;
+    newComment.virus_id = req.query.virus_id;
+    newComment.id_user = req.query.user_id;
+    newComment.save().then(function(newUser) { 
+    User.hasMany(Comment, {foreignKey: 'id_user'});
+    Comment.belongsTo(User, {foreignKey: 'id_user'});        
+    Comment.findAll({ 
+        where: {
+          virus_id: req.query.virus_id
+        },include: [{model: User, required: true}]
+        }).then(function(comments) {
+            res.json(comments);
+        });
+    });
+});
+
+app.get('/globe/api/remove_user', function(req, res) {
+   
+    cachedCurrentUser = myCache.get( "currentUser" );
+
+    if(cachedCurrentUser)
+    {
+        console.log(req);
+
+        user_id = req.query.user_id;
+
+        User.destroy({ 
+        where: {
+          id: user_id
+        }
+        }).then(function(succcess) {
+
+        });
+    }
+});
+
+app.get('/globe/admin', function(req, res) {
+    
+    User.hasMany(Virus, {foreignKey: 'user_id'});
+   
+    Virus.belongsTo(User, {foreignKey: 'user_id'});
+    Virus_Type.hasMany(Virus, {foreignKey: 'virus_type_id'});
+    Virus.belongsTo(Virus_Type, {foreignKey: 'virus_type_id'});
+    
+    User.findAll({
+        //include: [{model: User, required: true}, {model:Virus_Type, required: true}],
+        order:'username ASC'
+
+    }).then(function(users)
+    {
+
+    res.render('admin', {
+        users: users
+    });                  
+ 
+    });
+    
+});
+
+app.get('/send', function(req, res) {
+   
+    res.redirect('/globe');    
+    
+});
+
+
 app.post('/send', function(req, res){ // Specifies which URL to listen for
 
     cachedCurrentUser = myCache.get( "currentUser" );
     //if(cachedCurrentUser)
     //{
-        
-    console.log("yo");
-    console.log(req.body.diseaseType);
-    console.log("user id" + req.body.userId);
-    console.log("lat" + req.body.latitude);
-    console.log("long" + req.body.longitude);
     var t = new Date();
     var YYYY = t.getFullYear();
     var MM = ((t.getMonth() + 1 < 10) ? '0' : '') + (t.getMonth() + 1);

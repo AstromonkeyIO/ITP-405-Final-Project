@@ -3,22 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/models/virus.js</file>
             <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/public/third-party/Detector.js</file>
             <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/views/indexOld.ejs</file>
             <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/app.js</file>
             <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/public/third-party/Tween.js</file>
-            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/views/songs.ejs</file>
             <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/views/login.ejs</file>
-            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/models/song.js</file>
-            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/config/Sequelize.js</file>
-            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/models/virus_type.js</file>
-            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/public/virusData.json</file>
-            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/models/dvd.js</file>
+            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/public/login.css</file>
+            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/public/admin.js</file>
+            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/public/index.css</file>
+            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/public/login.js</file>
+            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/views/admin.css</file>
+            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/models/comment.js</file>
+            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/public/index.js</file>
+            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/views/admin.ejs</file>
             <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/models/user.js</file>
             <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/views/index.ejs</file>
-            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/public/population909500.json</file>
-            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/views/dvds.ejs</file>
+            <file>file:/Applications/MAMP/htdocs/MovieSearchNodeJS/test/test.js</file>
         </group>
     </open-files>
 </project-private>
